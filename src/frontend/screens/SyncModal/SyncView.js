@@ -48,6 +48,11 @@ const m = defineMessages({
     description: "First 5 characters of project key displayed on sync screen",
     defaultMessage: "Project Key: {projectKey}",
   },
+  connectMapeoWeb: {
+    id: "screens.SyncModal.SyncView.connectMapeoWeb",
+    description: "Button to connect to Mapeo-Web",
+    defaultMessage: "Connect to Mapeo Web",
+  },
 });
 
 const WifiBar = ({ onPress, ssid, deviceName }) => (
@@ -64,6 +69,12 @@ const WifiBar = ({ onPress, ssid, deviceName }) => (
     </View>
   </TouchableNativeFeedback>
 );
+
+const CloudSyncBar = ({ onPress }) => {
+  <TouchableNativeFeedback onPress={onPress}>
+    <Text>{"Sync with Mapeo-Web"}</Text>
+  </TouchableNativeFeedback>;
+};
 
 const NoWifiBox = ({ onPress }) => {
   const { formatMessage: t } = useIntl();
@@ -121,6 +132,8 @@ const SyncView = ({
   deviceName,
   onWifiPress,
   projectKey,
+  canSyncConnect,
+  onSyncConnectPress,
 }: Props) => (
   <View style={styles.root}>
     {ssid ? (
@@ -131,6 +144,8 @@ const SyncView = ({
         ) : (
           <SearchingBox />
         )}
+
+        {canSyncConnect ? <CloudSyncBar onPress={onSyncConnectPress} /> : null}
 
         <Text style={styles.projectId}>
           <FormattedMessage
