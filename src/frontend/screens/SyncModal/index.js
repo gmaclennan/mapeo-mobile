@@ -57,6 +57,11 @@ const SyncModal = ({ navigation }: Props) => {
   );
   const [ssid, setSsid] = React.useState<null | string>(null);
 
+  const cloudPeer = peers.find(({ deviceType }) => deviceType === "cloud");
+  const nonCloudPeers = peers.filter(
+    ({ deviceType }) => deviceType !== "cloud"
+  );
+
   React.useEffect(() => {
     const subscriptions = [];
     const handleConnectionChange = async (data: {}) => {
@@ -130,7 +135,8 @@ const SyncModal = ({ navigation }: Props) => {
   return (
     <SyncView
       deviceName={deviceName}
-      peers={peers}
+      peers={nonCloudPeers}
+      cloudPeer={cloudPeer}
       ssid={ssid}
       onClosePress={() => navigation.pop()}
       onWifiPress={handleWifiPress}

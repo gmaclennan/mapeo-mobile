@@ -7,7 +7,7 @@ import { defineMessages, FormattedMessage, useIntl } from "react-intl";
 import Button from "../../sharedComponents/Button";
 import { WifiOffIcon, WifiIcon } from "../../sharedComponents/icons";
 import DotIndicator from "./DotIndicator";
-import PeerList from "./PeerList";
+import PeerList, { PeerItem } from "./PeerList";
 import type { Peer } from "./PeerList";
 
 const m = defineMessages({
@@ -70,11 +70,27 @@ const WifiBar = ({ onPress, ssid, deviceName }) => (
   </TouchableNativeFeedback>
 );
 
-const CloudSyncBox = ({ onPress }) => (
-  <TouchableNativeFeedback onPress={onPress}>
-    <Text>{"Sync with Mapeo-Web"}</Text>
-  </TouchableNativeFeedback>
-);
+const CloudSyncBox = ({
+  onSyncConnectPress,
+  onSyncPress,
+  canSyncConnect,
+  cloudPeer,
+}) =>
+  cloudPeer ? (
+    cloudPeer.status !== "complete" ? (
+      <PeerItem {...cloudPeer} onSyncPress={onSyncPress} />
+    ) : (
+      <PeerItem {...cloudPeer} connected={true} onClick={onSyncConnectPress} />
+    )
+  ) : canSyncConnect ? (
+    <PeerItem
+      name="Mapeo Cloud Sync"
+      deviceType="cloud"
+      status="ready"
+      conneced
+      onClick={onSyncConnectPress}
+    />
+  ) : null;
 
 const NoWifiBox = ({ onPress }) => {
   const { formatMessage: t } = useIntl();
@@ -119,10 +135,13 @@ const SearchingBox = () => (
 type Props = {
   onSyncPress: (peerId: string) => void,
   onWifiPress: () => void,
+  onSyncConnectPress: () => void,
   deviceName: string,
   peers: Array<Peer>,
+  cloudPeer: null | Peer,
   ssid: null | string,
   projectKey?: string,
+  canSyncConnect: boolean,
 };
 
 const SyncView = ({
@@ -134,18 +153,25 @@ const SyncView = ({
   projectKey,
   canSyncConnect,
   onSyncConnectPress,
+  cloudPeer,
 }: Props) => (
   <View style={styles.root}>
     {ssid ? (
       <>
         <WifiBar onPress={onWifiPress} ssid={ssid} deviceName={deviceName} />
+
+        <CloudSyncBox
+          canSyncConnect={canSyncConnect}
+          onSyncConnectPress={onSyncConnectPress}
+          onSyncPress={onSyncPress}
+          cloudPeer={cloudPeer}
+        />
+
         {peers.length ? (
           <PeerList peers={peers} onSyncPress={onSyncPress} />
         ) : (
           <SearchingBox />
         )}
-
-        {canSyncConnect ? <CloudSyncBox onPress={onSyncConnectPress} /> : null}
 
         <Text style={styles.projectId}>
           <FormattedMessage
