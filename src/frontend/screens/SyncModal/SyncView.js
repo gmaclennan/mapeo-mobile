@@ -7,7 +7,7 @@ import { defineMessages, FormattedMessage, useIntl } from "react-intl";
 import Button from "../../sharedComponents/Button";
 import { WifiOffIcon, WifiIcon } from "../../sharedComponents/icons";
 import DotIndicator from "./DotIndicator";
-import PeerList, { PeerItem } from "./PeerList";
+import PeerList, { PeerItem, peerStatus } from "./PeerList";
 import type { Peer } from "./PeerList";
 
 const m = defineMessages({
@@ -84,10 +84,10 @@ const CloudSyncBox = ({
     )
   ) : canSyncConnect ? (
     <PeerItem
-      name="Mapeo Cloud Sync"
+      name="Mapeo Cloud"
       deviceType="cloud"
-      status="ready"
-      conneced
+      status={peerStatus.READY}
+      connected={true}
       onClick={onSyncConnectPress}
     />
   ) : null;
