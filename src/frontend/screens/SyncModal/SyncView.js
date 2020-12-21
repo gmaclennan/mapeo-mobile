@@ -80,7 +80,11 @@ const CloudSyncBox = ({
     cloudPeer.status !== "complete" ? (
       <PeerItem {...cloudPeer} onSyncPress={onSyncPress} />
     ) : (
-      <PeerItem {...cloudPeer} connected={true} onClick={onSyncConnectPress} />
+      <PeerItem
+        {...cloudPeer}
+        connected={true}
+        onSyncPress={onSyncConnectPress}
+      />
     )
   ) : canSyncConnect ? (
     <PeerItem
@@ -88,7 +92,7 @@ const CloudSyncBox = ({
       deviceType="cloud"
       status={peerStatus.READY}
       connected={true}
-      onClick={onSyncConnectPress}
+      onSyncPress={onSyncConnectPress}
     />
   ) : null;
 
