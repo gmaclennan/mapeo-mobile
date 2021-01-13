@@ -449,8 +449,10 @@ export function Api({
     },
 
     // Connect to a mapeo-web instance from a URL
-    syncConnect: function (target: { url: string }) {
-      return onReady().then(() => nodejs.channel.post("sync-connect", target));
+    connectCloud: function (target: { url: string }) {
+      return onReady().then(() =>
+        nodejs.channel.post("sync-connect-cloud", target)
+      );
     },
 
     /**
