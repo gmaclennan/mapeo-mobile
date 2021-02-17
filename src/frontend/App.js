@@ -25,7 +25,7 @@ const log = debug("mapeo:App");
 const NAV_STORE_KEY = "@MapeoNavigation@8";
 const ERROR_STORE_KEY = "@MapeoError";
 
-const persistNavigationState = IS_E2E
+export const persistNavigationState = IS_E2E
   ? undefined
   : async navState => {
       try {
@@ -34,7 +34,7 @@ const persistNavigationState = IS_E2E
         log("Error saving navigation state", err);
       }
     };
-const loadNavigationState = IS_E2E
+export const loadNavigationState = IS_E2E
   ? undefined
   : async () => {
       try {
